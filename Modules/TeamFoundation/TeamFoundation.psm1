@@ -27,13 +27,13 @@ function Add-Workspace
   # TODO: Add verification that remote repo is not mispelled
   param
   (
-    [string] $workspace,
-    [string] $tfsPath,
-    [string] $localPath,
+    [Parameter(Mandatory=$true)] [string] $workspace,
+    [Parameter(Mandatory=$true)] [string] $tfsPath,
+    [Parameter(Mandatory=$true)] [string] $localPath,
     [string] $collection = $env:TfsDefaultCollection
   )
   
-  if ($env:TfsDefaultCollection -eq "" -and $collection -eq "")
+  <# if ($env:TfsDefaultCollection -eq "" -and $collection -eq "")
   {
     throw "The collection is blank (if not supplied, it also means the environment variable 'TfsDefaultCollection' is also empty)"
   }
@@ -41,7 +41,7 @@ function Add-Workspace
   if ($workspace -eq "" -or $tfsPath -eq "" -or $localPath -eq "")
   {
     throw "Usage: tf -workspace myWorkspace -tfsPath $/root/path/source -localPath C:\localpath"
-  }
+  } #>
   
   Write-Output "*********************************************************"
   Write-Output "Creating Workspace with"
