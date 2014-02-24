@@ -34,6 +34,9 @@ function Run-Tests
 
   & $XUnitConsolePath $Assembly /xml "$LogFile.FullName"
 
+  #Start-Process -FilePath $testconsolepath -ArgumentList $args -NoNewWindow -Wait
+ 
+
   #Write-Output $LogFile.FullName
 }
 
