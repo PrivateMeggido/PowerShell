@@ -87,8 +87,44 @@ function Recurse-Build
   } 
 }
 
+<# 
+  .SYNOPSIS
+
+  .DESCRIPTION
+
+  .PARAMETER  <Parameter-Name>
+
+  .EXAMPLE
+
+  .INPUTS
+
+  .OUTPUTS
+
+  .NOTES
+
+  .LINK
+
+  .COMPONENT
+
+  .ROLE
+
+  .FUNCTIONALITY
+
+  .FORWARDHELPTARGETNAME <Command-Name>
+
+  .FORWARDHELPCATEGORY  <Category>
+
+  .REMOTEHELPRUNSPACE <PSSession-variable>
+
+  .EXTERNALHELP  <XML Help File>
+#>
+function Recurse-BuildAll
+{
+  Recurse-Build -configuration Debug; Recurse-Build -configuration Release
+}
 
 # Exports
 Export-ModuleMember -function Build
 Export-ModuleMember -function Recurse-Build
+Export-ModuleMember -function Recurse-BuildAll
  
