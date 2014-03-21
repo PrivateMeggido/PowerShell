@@ -34,6 +34,8 @@ function Build
     [string] $Target = "Clean;Build"
   )
 
+  Write-Host "Using Configuration $Configuration\n\n" -foreground "blu"; `
+
   Write-Host "Building $Solution ..." -foreground "green"; `
 
   try
