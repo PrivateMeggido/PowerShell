@@ -33,6 +33,8 @@ function Build
     [string] $Target = "Clean;Build"
   )
 
+  Write-Host "Using Configuration $Configuration\n\n" -foreground "blu"; `
+
   Write-Host "Building $Solution ..." -foreground "green"; `
   & 'C:\Program Files (x86)\MSBuild\12.0\Bin\amd64\MSBuild.exe' `
   /maxCpuCount `
