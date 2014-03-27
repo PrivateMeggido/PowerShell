@@ -186,33 +186,18 @@ function Recurse-Build
 <# 
   .SYNOPSIS
 
-  .DESCRIPTION
+  Rebuilds all solutions found under the current folder using both "Debug" and "Release".
 
-  .PARAMETER  <Parameter-Name>
+  .DESCRIPTION
+  Rebuilds all solutions found under the current folder using both "Debug" and "Release".
+  This is just a shortcut to call the two most common configurations. For more granular 
+  control, use "Recurse-Build" and specify parameters for each configuration.
 
   .EXAMPLE
 
-  .INPUTS
+  C:\source>Recurse-BuildAll
 
-  .OUTPUTS
-
-  .NOTES
-
-  .LINK
-
-  .COMPONENT
-
-  .ROLE
-
-  .FUNCTIONALITY
-
-  .FORWARDHELPTARGETNAME <Command-Name>
-
-  .FORWARDHELPCATEGORY  <Category>
-
-  .REMOTEHELPRUNSPACE <PSSession-variable>
-
-  .EXTERNALHELP  <XML Help File>
+  This command will build all the solutions found recursively under the "source" folder with 
 #>
 function Recurse-BuildAll
 {
