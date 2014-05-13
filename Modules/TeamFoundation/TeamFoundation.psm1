@@ -121,8 +121,28 @@ function Get-Workspaces
   tf workspaces /collection:$collection
 }
 
+<# 
+ .Synopsis
+  Reset the workspace. Use with caution, it wipes out the directory it is called in recursively.
+
+ .Description
+  Clears the workspace. Use with caution, it wipes out the directory it is called in recursively.
+  Restores the workspace fully from TFS after it clears out the folder.
+  Because it does wipe out the folder recursively, there is a prompt to confirm the deletions.
+
+ .Example
+   # Reset the Current Workspace 
+   c:\TheWorkspaceFolder\Reset-Workspace
+#>
+function Reset-Workspace
+{
+  Remove-Item -recurse -force -confirm *
+  tf get -force
+}
+
 # Exports
 Export-ModuleMember -function Add-Workspace
 Export-ModuleMember -function Remove-Workspace
 Export-ModuleMember -function Get-Workspaces
+Export-ModuleMember -function Reset-Workspace
 

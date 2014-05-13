@@ -29,7 +29,5 @@ function Compare-Folders
   } 
 }
 
-
-Set-Alias cd Push-Location -Force
-
 Export-ModuleMember -function Compare-Folders
+
