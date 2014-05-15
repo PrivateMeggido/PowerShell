@@ -71,8 +71,8 @@ function Start-WebApp
 
   Write-Host "Started $StripAppPath at $Port - PID $PID"
 
-  #$WebAppProcess.WaitForInputIdle(1000)
-  Start-Sleep -s 1 
+  # Bogus Wait to give IISExpress time to start
+  Start-Sleep -s 1  
   $WindowTextResult = [Win32Api]::SetWindowText($WebAppProcess.MainWindowHandle, "PID $PID - $StripAppPath at $Port")
 
 }
