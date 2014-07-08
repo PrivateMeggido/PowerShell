@@ -31,7 +31,8 @@ function Build
     [string] $FileLoggerParameters = "LogFile=$LogFile;Verbosity=$Verbosity",
     [string] $ConsoleVerbosity = "Minimal",
     [string] $ConsoleLoggerParameters = "Verbosity=$ConsoleVerbosity",
-    [string] $Target = "Clean;Build"
+    [string] $Target = "Clean;Build",
+    [string] $RunCodeAnalysis = "Always"
   )
 
   Write-Host "Building $Solution ..." -foreground "green"; `
@@ -44,6 +45,7 @@ function Build
     /target:$Target `
     /p:Configuration=$Configuration `
     /p:Platform=$Platform $Solution `
+    /p:RunCodeAnalysis=$RunCodeAnalysis `
     /fileLogger `
     /fileLoggerParameters:$FileLoggerParameters `
     /consoleLoggerParameters:$ConsoleLoggerParameters `
@@ -126,6 +128,9 @@ function Recurse-Build
     [ValidateNotNullOrEmpty()]
     [string] $Verbosity = "Normal",
     [Parameter()]
+    [ValidateNotNullOrEmpty()]
+    [string] $RunCodeAnalysis = "Always",
+    [Parameter()]
     [string] $ConsoleLoggerParameters = "ErrorsOnly;",
     [Parameter()]
     [ValidateNotNullOrEmpty()]
@@ -145,6 +150,7 @@ function Recurse-Build
     Write-Host "Recurse Building with the following setup" -foreground "black" -background "gray";
     Write-Host "   Configuration:          $Configuration" -foreground "black" -background "gray";
     Write-Host "   Platform:               $Platform" -foreground "black" -background "gray";
+    Write-Host "   Run Code Analysis:      $RunCodeAnalysis" -foreground "black" -background "gray";
     Write-Host "   Log File:               $LogFile" -foreground "black" -background "gray";
     Write-Host "   Log File Verbosity:     $Verbosity" -foreground "black" -background "gray";
     Write-Host "   Console Log Parameters: $ConsoleLoggerParameters" -foreground "black" -background "gray";
@@ -152,6 +158,7 @@ function Recurse-Build
 
     $ConfigurationPhrase           = "-Configuration `"$Configuration`"";
     $PlatformPhrase                = "-Platform `"$Platform`"";
+    $CodeAnalysisPhrase            = "-RunCodeAnalysisis `"$RunCodeAnalysis`"";
     $FileLoggerParametersPhrase    = "-FileLoggerParameters `"LogFile=$LogFile;Verbosity=$Verbosity;Append`"";
     $ConsoleLoggerParametersPhrase = if ($ConsoleLoggerParameters) { "-ConsoleLoggerParameters `"$ConsoleLoggerParameters`"" } else { "" };
     $VerbosityPhrase               = "-Verbosity `"$Verbosity`"";
@@ -163,6 +170,7 @@ function Recurse-Build
       $BuildPhrase = "Build " +
                      $ConfigurationPhrase + " " + 
                      $PlatformPhrase + " " + 
+                     $CodeAnalysisPhrase + " " + 
                      $FileLoggerParametersPhrase + " " + 
                      $ConsoleLoggerParametersPhrase + " " + 
                      $VerbosityPhrase + " " +

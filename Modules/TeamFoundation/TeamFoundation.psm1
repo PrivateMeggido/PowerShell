@@ -110,7 +110,8 @@ function Get-Workspaces
 {
   param
   (
-    [string] $collection = $env:TfsDefaultCollection
+    [string] $collection = $env:TfsDefaultCollection,
+    [string] $format  = "Brief"
   )
 
   if ($collection -eq "")
@@ -118,7 +119,7 @@ function Get-Workspaces
     throw "The collection is blank (if not supplied, it also means the environment variable 'TfsDefaultCollection' is also empty)"
   }
 
-  tf workspaces /collection:$collection
+  tf workspaces /collection:$collection /format:$format
 }
 
 <# 
