@@ -41,6 +41,7 @@ function Build
   {
     & 'C:\Program Files (x86)\MSBuild\12.0\Bin\amd64\MSBuild.exe' `
     /maxCpuCount `
+    /p:BuildInParallel=true `
     /nologo `
     /target:$Target `
     /p:Configuration=$Configuration `
