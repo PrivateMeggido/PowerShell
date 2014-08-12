@@ -23,7 +23,7 @@ function Build
 {
   param
   (
-    [string] $Configuration = "Debug",
+    [string] $Configuration = "Release",
     [string] $Platform = "Any Cpu",
     [string] $Solution = "",
     [string] $LogFile = "c:\logs\msbuild\msbuild.log",
@@ -71,7 +71,7 @@ function Build
   are not extended on the recurse build.  
 
   .PARAMETER $Configuration
-  The Configuration to use, defaults to "Debug" if not provided.
+  The Configuration to use, defaults to "Release" if not provided.
 
   .PARAMETER $Platform
   The Platform to use (x86, x64, Any Cpu). Defaults to "Any Cpu" if not provided.
@@ -121,7 +121,7 @@ function Recurse-Build
   (
     [Parameter()]
     [ValidateNotNullOrEmpty()]
-    [string] $Configuration = "Debug",
+    [string] $Configuration = "Release",
     [Parameter()]
     [ValidateNotNullOrEmpty()]
     [string] $Platform = "Any Cpu",
@@ -195,7 +195,7 @@ function Recurse-Build
 <# 
   .SYNOPSIS
 
-  Rebuilds all solutions found under the current folder using both "Debug" and "Release".
+  Rebuilds all solutions found under the current folder using "Debug" and "Release".
 
   .DESCRIPTION
   Rebuilds all solutions found under the current folder using both "Debug" and "Release".
