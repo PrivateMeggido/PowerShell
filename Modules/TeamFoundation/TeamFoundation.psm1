@@ -232,7 +232,7 @@ function Get-ParentBranch
     $BranchPath = tf workfold | select -skip 3 @{Name="BranchPath";Expression={($_ -split ":")[0].Trim()}} | select -ExpandProperty "BranchPath"
     $BranchesCommand =  "tf branches " + $BranchPath
     $Branches = Invoke-Expression -Command $BranchesCommand 
-    $BranchLineIndex = $Branches | Select-String -pattern ">>.*" | Select-Object -ExpandProperty "LineNumber"
+    $BranchLineIndex = $Branches | Select-String -pattern ">>.*" | Select-Object -last 1 -ExpandProperty "LineNumber"
   }
   catch 
   {
@@ -256,17 +256,16 @@ function Get-ParentBranch
       $currentBranchLine = $Branches[$currentIndex - 1];
       if ($currentIndex -eq $BranchLineIndex)
       {
-        #$tabSectionMatch = $currentBranchLine -match '^>>(\t*)\$.*'
-        $tabSectionMatch = $currentBranchLine -match '^>>(.*)(\$.*)\t(.*)'
-        $tabSectionCount = $matches[1]
-        $tabMatches = $regex.Matches($tabSectionCount)
+        $tabSectionMatch = $currentBranchLine -match '^>>(.*?)(\$[^\t]*)\t?(.*?)'
+        $tabSection = $matches[1]
+        $tabMatches = $regex.Matches($tabSection)
         $baseTabCount = $tabMatches.Count
       }
       else
       {
-        $tabSectionMatch = $currentBranchLine -match '^(.*)(\$.*)\t(.*)'
-        $tabSectionCount = $matches[1]
-        $tabMatches = $regex.Matches($tabSectionCount)
+        $tabSectionMatch = $currentBranchLine -match '^(.*?)(\$[^\t]*)\t?(.*?)'
+        $tabSection = $matches[1]
+        $tabMatches = $regex.Matches($tabSection)
         if ($tabMatches.Count -lt $baseTabCount)
         {
           $parentBranch = $matches[2]

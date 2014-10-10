@@ -33,7 +33,7 @@ function Run-Tests
     throw "No assembly was provided"
   }
 
-  $Arguments = "$Assembly /xml $LogFile.FullName"
+  $Arguments = "$Assembly /xml $LogFile.FullName /noshadow"
 
   Start-Process -FilePath $XUnitConsolePath $Arguments
   #Start-Process -FilePath $testconsolepath -ArgumentList $args -NoNewWindow -Wait
