@@ -1,6 +1,6 @@
 Set-StrictMode -Version Latest
 
-<# 
+<#
  .Synopsis
   Builds the solution at the current folder with configuration and platform values.
 
@@ -9,7 +9,7 @@ Set-StrictMode -Version Latest
   Default values are "Debug" for Configuration and "Any Cpu" for platform.
 
  . Parameter configuration
- . 
+ .
 
  .Example
    # Build with defaults
@@ -58,7 +58,7 @@ function Build
   }
 }
 
-<# 
+<#
   .SYNOPSIS
 
   Builds all .sln files under the current folder
@@ -68,7 +68,7 @@ function Build
   Builds all .sln files under the current folder.
   Depends in another function on the module "Build".
   Since the goal is to shorcut common usage, some of the extra options on the Build function
-  are not extended on the recurse build.  
+  are not extended on the recurse build.
 
   .PARAMETER $Configuration
   The Configuration to use, defaults to "Release" if not provided.
@@ -89,6 +89,9 @@ function Build
   The Log File Prefix. Recurse build handles the log by appending to it, after first clearing the file (prior to the first build).
   The File name will be the Prefix plus the full date, with the "msbuild" file extension.
 
+  .PARAMETER $Include
+  A pattern for the files to include. Defaults to "*.sln".
+
   .EXAMPLE
 
   C:\source>Recurse-Build
@@ -105,7 +108,7 @@ function Build
 
   C:\source>Recurse-Build -Verbosity Normal -ConsoleLoggerParameters ShowTimestamp;Verbosity:
 
-  This command will build all the solutions found recursively under the "source" folder with 
+  This command will build all the solutions found recursively under the "source" folder with
 
   .EXAMPLE
 
@@ -138,7 +141,10 @@ function Recurse-Build
     [string] $LogPrefix = "recurse-build-",
     [Parameter()]
     [ValidateNotNullOrEmpty()]
-    [string] $LogPath = "C:\logs\msbuild"
+    [string] $LogPath = "C:\logs\msbuild",
+    [Parameter()]
+    [ValidateNotNullOrEmpty()]
+    [string] $Include = "*.sln"
   )
 
   try
@@ -155,6 +161,7 @@ function Recurse-Build
     Write-Host "   Log File:               $LogFile" -foreground "black" -background "gray";
     Write-Host "   Log File Verbosity:     $Verbosity" -foreground "black" -background "gray";
     Write-Host "   Console Log Parameters: $ConsoleLoggerParameters" -foreground "black" -background "gray";
+    Write-Host "   Include files matching: $Include " -foreground "black" -background "gray";
     Write-Host "`r`n";
 
     $ConfigurationPhrase           = "-Configuration `"$Configuration`"";
@@ -163,22 +170,22 @@ function Recurse-Build
     $FileLoggerParametersPhrase    = "-FileLoggerParameters `"LogFile=$LogFile;Verbosity=$Verbosity;Append`"";
     $ConsoleLoggerParametersPhrase = if ($ConsoleLoggerParameters) { "-ConsoleLoggerParameters `"$ConsoleLoggerParameters`"" } else { "" };
     $VerbosityPhrase               = "-Verbosity `"$Verbosity`"";
-    
-    $Solutions = Get-ChildItem -path . -recurse -include *.sln;
 
-    ForEach ($Solution in $Solutions) 
-    { 
+    $Solutions = Get-ChildItem -path . -recurse -include $Include;
+
+    ForEach ($Solution in $Solutions)
+    {
       $BuildPhrase = "Build " +
-                     $ConfigurationPhrase + " " + 
-                     $PlatformPhrase + " " + 
-                     $CodeAnalysisPhrase + " " + 
-                     $FileLoggerParametersPhrase + " " + 
-                     $ConsoleLoggerParametersPhrase + " " + 
+                     $ConfigurationPhrase + " " +
+                     $PlatformPhrase + " " +
+                     $CodeAnalysisPhrase + " " +
+                     $FileLoggerParametersPhrase + " " +
+                     $ConsoleLoggerParametersPhrase + " " +
                      $VerbosityPhrase + " " +
                      "-Solution " + "`"$Solution`"";
 
       Write-Debug "Executing `"$BuildPhrase`"";
-  
+
       Invoke-Expression $BuildPhrase;
     }
 
@@ -189,24 +196,24 @@ function Recurse-Build
   {
     Add-Content $LogFile $_.Exception.Message;
     Write-Host "There was a problem with the Recurse Build, check logfile '$LogFile'" -foreground "red";
-  } 
+  }
 }
 
-<# 
+<#
   .SYNOPSIS
 
   Rebuilds all solutions found under the current folder using "Debug" and "Release".
 
   .DESCRIPTION
   Rebuilds all solutions found under the current folder using both "Debug" and "Release".
-  This is just a shortcut to call the two most common configurations. For more granular 
+  This is just a shortcut to call the two most common configurations. For more granular
   control, use "Recurse-Build" and specify parameters for each configuration.
 
   .EXAMPLE
 
   C:\source>Recurse-BuildAll
 
-  This command will build all the solutions found recursively under the "source" folder with 
+  This command will build all the solutions found recursively under the "source" folder with
 #>
 function Recurse-BuildAll
 {
@@ -217,4 +224,3 @@ function Recurse-BuildAll
 Export-ModuleMember -function Build
 Export-ModuleMember -function Recurse-Build
 Export-ModuleMember -function Recurse-BuildAll
- 

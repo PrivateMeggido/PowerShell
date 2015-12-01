@@ -14,3 +14,7 @@ foreach {
 popd
 
 write-host "`nVisual Studio 2013 Command Prompt variables set." -ForegroundColor Yellow
+
+# Load posh-git example profile
+. 'C:\Users\juan_m_medina\Documents\WindowsPowerShell\Modules\posh-git\profile.example.ps1'
+
