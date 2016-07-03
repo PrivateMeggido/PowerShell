@@ -90,7 +90,10 @@ function Build
   The File name will be the Prefix plus the full date, with the "msbuild" file extension.
 
   .PARAMETER $Include
-  A pattern for the files to include. Defaults to "*.sln".
+  A pattern for the files to include. Defaults to "*.sln". This is a string array, so comma separated values will result in multiple patterns being applied.
+
+  .PARAMETER $Exclude
+  A pattern for the files to exclude. Defaults to "". This is a string array, so comma separated values will result in multiple patterns being applied.
 
   .EXAMPLE
 
@@ -144,7 +147,9 @@ function Recurse-Build
     [string] $LogPath = "C:\logs\msbuild",
     [Parameter()]
     [ValidateNotNullOrEmpty()]
-    [string] $Include = "*.sln"
+    [string[]] $Include = "*.sln",
+    [ValidateNotNullOrEmpty()]
+    [string[]] $Exclude = ""      
   )
 
   try
@@ -162,6 +167,7 @@ function Recurse-Build
     Write-Host "   Log File Verbosity:     $Verbosity" -foreground "black" -background "gray";
     Write-Host "   Console Log Parameters: $ConsoleLoggerParameters" -foreground "black" -background "gray";
     Write-Host "   Include files matching: $Include " -foreground "black" -background "gray";
+    Write-Host "   Exclude files matching: $Exclude " -foreground "black" -background "gray";    
     Write-Host "`r`n";
 
     $ConfigurationPhrase           = "-Configuration `"$Configuration`"";
@@ -171,7 +177,7 @@ function Recurse-Build
     $ConsoleLoggerParametersPhrase = if ($ConsoleLoggerParameters) { "-ConsoleLoggerParameters `"$ConsoleLoggerParameters`"" } else { "" };
     $VerbosityPhrase               = "-Verbosity `"$Verbosity`"";
 
-    $Solutions = Get-ChildItem -path . -recurse -include $Include;
+    $Solutions = Get-ChildItem -path . -recurse -include $Include -exclude $Exclude;
 
     ForEach ($Solution in $Solutions)
     {

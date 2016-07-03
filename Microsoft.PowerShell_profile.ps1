@@ -13,8 +13,14 @@ foreach {
 }
 popd
 
-write-host "`nVisual Studio 2013 Command Prompt variables set." -ForegroundColor Yellow
+write-host "`nVisual Studio Command Prompt variables set." -ForegroundColor Yellow
 
-# Load posh-git example profile
-. 'C:\Users\juan_m_medina\Documents\WindowsPowerShell\Modules\posh-git\profile.example.ps1'
+# Load posh-git profile
+. 'C:\Users\juan_m_medina\Documents\WindowsPowerShell\Modules\posh-git\juanprofile.ps1'
+$GitPromptSettings.EnableFileStatus=$false
 
+
+function Build-DSA
+{
+  iex "Recurse-Build -include:Dell*.sln -exclude:*.Models.sln,*.SequenceDiagrams.sln"
+}
