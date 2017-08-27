@@ -39,6 +39,19 @@ function Decode-Base64
   [System.Text.Encoding]::ASCII.GetString([System.Convert]::FromBase64String($InputText))
 }
 
+function Find-FilesWithText
+{
+  param
+  (
+    [Parameter(Position=0,Mandatory=$true,ValueFromPipeline=$false)][ValidateNotNullOrEmpty()][string] $FilePattern,
+    [Parameter(Position=1,Mandatory=$true,ValueFromPipeline=$false)][ValidateNotNullOrEmpty()][string] $TextPattern,
+    [Parameter(Position=2,Mandatory=$false,ValueFromPipeline=$false)][switch] $recurse = $false
+    
+  )
+
+  Get-ChildItem -filter $FilePattern -recurse:$recurse | ForEach-Object { If ((Get-Content $_.FullName) | Where-Object { $_.Contains($TextPattern)} ) { $_.FullName }}
+}
+
 #function Extract-Gz
 #{
 #  param
@@ -70,5 +83,7 @@ function Decode-Base64
 
 Export-ModuleMember -function Compare-Folders
 Export-ModuleMember -function Decode-Base64
+Export-ModuleMember -function Find-FilesWithText
 #Export-ModuleMember -function Extract-Gz
+
 

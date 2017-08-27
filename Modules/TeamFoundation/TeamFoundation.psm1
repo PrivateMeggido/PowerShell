@@ -30,10 +30,10 @@ function Add-Workspace
     [Parameter(Mandatory=$true)] [string] $workspace,
     [Parameter(Mandatory=$true)] [string] $tfsPath,
     [Parameter(Mandatory=$true)] [string] $localPath,
-    [string] $collection = $env:TfsDefaultCollection
+    [string] $collection = $TfsDefaultCollection
   )
   
-  <# if ($env:TfsDefaultCollection -eq "" -and $collection -eq "")
+  <# if ($TfsDefaultCollection -eq "" -and $collection -eq "")
   {
     throw "The collection is blank (if not supplied, it also means the environment variable 'TfsDefaultCollection' is also empty)"
   }
@@ -45,7 +45,7 @@ function Add-Workspace
   
   Write-Output "*********************************************************"
   Write-Output "Creating Workspace with"
-  Write-Output " - TFS Collection: '$env:TfsDefaultCollection'"
+  Write-Output " - TFS Collection: '$TfsDefaultCollection'"
   Write-Output " - Workspace Name: '$workspace'"
   Write-Output " - TFS Path: '$tfsPath'"
   Write-Output " - Local Path: '$localPath'"
@@ -78,10 +78,10 @@ function Add-Workspace
   }
 
   # Create the workspace
-  tf workspace /new $workspace`;juan_m_medina /collection:$env:TfsDefaultCollection /noprompt
+  tf workspace /new $workspace`;juan_m_medina /collection:$TfsDefaultCollection /noprompt
   
   # Map it to the right folder
-  tf workfold /collection:$env:TfsDefaultCollection /workspace:$workspace /map "$tfsPath" "$localPath"
+  tf workfold /collection:$TfsDefaultCollection /workspace:$workspace /map "$tfsPath" "$localPath"
 
   popd
 }
@@ -106,7 +106,7 @@ function Remove-Workspace
   param
   (
     [string] $workspace,
-    [string] $collection = $env:TfsDefaultCollection,
+    [string] $collection = $TfsDefaultCollection,
     [switch] $removeLocal = $true
   )
 
@@ -153,7 +153,7 @@ function Get-Workspaces
 {
   param
   (
-    [string] $collection = $env:TfsDefaultCollection,
+    [string] $collection = $TfsDefaultCollection,
     [string] $format  = "Brief"
   )
 
@@ -188,7 +188,7 @@ function Get-Workfolds
 {
   param
   (
-    [string] $collection = $env:TfsDefaultCollection,
+    [string] $collection = $TfsDefaultCollection,
     [string] $workspace = $(throw "workspace is mandatory, please provide a value"),
     [switch] $excludeCloaked
   )

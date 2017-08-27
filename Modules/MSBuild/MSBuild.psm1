@@ -39,7 +39,7 @@ function Build
 
   try
   {
-    & 'C:\Program Files (x86)\MSBuild\12.0\Bin\amd64\MSBuild.exe' `
+    & 'C:\Program Files (x86)\MSBuild\14.0\Bin\amd64\MSBuild.exe' `
     /maxCpuCount `
     /p:BuildInParallel=true `
     /nologo `

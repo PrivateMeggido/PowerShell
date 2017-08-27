@@ -57,22 +57,33 @@ function Start-WebApp
   Write-Debug "WebAppPath: $WebAppPath"
   Write-Debug "Port: $Port"
 
-  $FullPath = Resolve-Path -Path $WebAppPath
-  $StripAppPath = Split-Path -Path $FullPath -Leaf
-  $IISExpressPath = "$env:ProgramFiles\IIS Express\iisexpress.exe"
-  $Arguments = "/path:$($FullPath.Path) /port:$Port"
+  try
+  {
+    $FullPath = Resolve-Path -Path $WebAppPath -ErrorAction Stop
+    $StripAppPath = Split-Path -Path $FullPath -Leaf -ErrorAction Stop
+    $IISExpressPath = "$env:ProgramFiles\IIS Express\iisexpress.exe"
+    $Arguments = "/path:$($FullPath.Path) /port:$Port"
+  }
+  catch
+  {
+    Write-Host "Unable to resolve the given Path - Exception : $_"
+    Break
+  }
 
   Write-Debug "FullPath: $($FullPath.Path)"
   Write-Debug "IISExpressPath: $IISExpressPath"
   Write-Debug "Arguments: $Arguments"
-  
+ 
   $WebAppProcess = Start-Process -FilePath $IISExpressPath -ArgumentList $Arguments -PassThru
   $PID = $WebAppProcess.Id
 
-  Write-Host "Started $StripAppPath at $Port - PID $PID"
+  Write-Host "Current Title: $($WebAppProcess.MainWindowTitle)"
+
 
   # Bogus Wait to give IISExpress time to start
-  Start-Sleep -s 1  
+  Start-Sleep -s 1 
+
+  #Write-Host "Started $StripAppPath at $Port - PID $PID"
   $WindowTextResult = [Win32Api]::SetWindowText($WebAppProcess.MainWindowHandle, "PID $PID - $StripAppPath at $Port")
 
 }
